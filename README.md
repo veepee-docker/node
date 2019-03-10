@@ -34,12 +34,14 @@ Docker images of Node.js (with yarn).
 
 Supported tags and respective Dockerfile links.
 
-- 4 ([4/Dockerfile](4/Dockerfile))
-- 5 ([5/Dockerfile](5/Dockerfile))
-- 6 ([6/Dockerfile](6/Dockerfile))
-- 7 ([7/Dockerfile](7/Dockerfile))
-- 8 ([8/Dockerfile](8/Dockerfile))
-- 9, latest ([9/Dockerfile](9/Dockerfile))
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10, lts
+- 11, current, latest
 
 ## Usage
 
@@ -66,8 +68,8 @@ request.
    ╚═(███)═╝
 ```
 
-[license-img]: https://img.shields.io/badge/license-Apache-blue.svg
+[license-img]: https://img.shields.io/badge/license-ISC-blue.svg
 [license-href]: LICENSE
-[docker-img]: https://img.shields.io/docker/pulls/vpgrp/nodejs.svg
-[docker-href]: https://hub.docker.com/r/vpgrp/nodejs/
+[docker-img]: https://img.shields.io/docker/pulls/vptech/nodejs.svg
+[docker-href]: https://hub.docker.com/r/vptech/node/
 [contribute-href]: CONTRIBUTING.md
