@@ -23,9 +23,9 @@ RUN curl --silent "https://deb.nodesource.com/gpgkey/nodesource.gpg.key" | \
       apt-key --keyring /etc/apt/trusted.gpg.d/nodejs-keyring.gpg add - && \
     curl --silent "https://dl.yarnpkg.com/debian/pubkey.gpg" | \
       apt-key --keyring /etc/apt/trusted.gpg.d/yarn-keyring.gpg add - && \
-    echo "deb https://deb.nodesource.com/node_6.x stretch main" > \
+    echo "deb https://deb.nodesource.com/node_10.x stretch main" > \
       /etc/apt/sources.list.d/nodejs.list && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" > \
+    echo "deb https://dl.yarnpkg.com/debian stable main" > \
       /etc/apt/sources.list.d/yarn.list && \
     apt-get update  -qq && \
     apt-get upgrade -qq -y && \

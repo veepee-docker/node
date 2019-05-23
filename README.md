@@ -1,4 +1,4 @@
-# docker-nodejs
+# docker-node
 
 [![License][license-img]][license-href]
 [![docker][docker-img]][docker-href]
@@ -32,7 +32,7 @@ Docker images of Node.js (with yarn).
 
 ## Tags
 
-Supported tags and respective Dockerfile links.
+Supported tags.
 
 - 4
 - 5
@@ -41,11 +41,11 @@ Supported tags and respective Dockerfile links.
 - 8
 - 9
 - 10, lts
-- 11, current, latest
+- 11, latest
 
 ## Usage
 
-Soon :)
+WIP.
 
 ## Limitations
 
@@ -70,6 +70,6 @@ request.
 
 [license-img]: https://img.shields.io/badge/license-ISC-blue.svg
 [license-href]: LICENSE
-[docker-img]: https://img.shields.io/docker/pulls/vptech/nodejs.svg
+[docker-img]: https://img.shields.io/docker/pulls/vptech/node.svg
 [docker-href]: https://hub.docker.com/r/vptech/node/
 [contribute-href]: CONTRIBUTING.md

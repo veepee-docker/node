@@ -1,101 +1,219 @@
 ---
 # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
 
+# build template
+.build:
+  stage: build
+  image: docker:latest
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - image
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay
+
+# test template
+.test:
+  stage: test
+  image: docker:latest
+  before_script:
+    - docker load -i image/v4.tar
+    - docker load -i image/v5.tar
+    - docker load -i image/v6.tar
+    - docker load -i image/v7.tar
+    - docker load -i image/v8.tar
+    - docker load -i image/v9.tar
+    - docker load -i image/v10.tar
+    - docker load -i image/v11.tar
+  only:
+    - master
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay
+
+# deploy template
+.deploy:
+  stage: deploy
+  image: docker:latest
+  before_script:
+    - docker login -u "$REGISTRY_USERNAME" -p "$REGISTRY_PASSWORD"
+    - docker load -i image/v4.tar
+    - docker load -i image/v5.tar
+    - docker load -i image/v6.tar
+    - docker load -i image/v7.tar
+    - docker load -i image/v8.tar
+    - docker load -i image/v9.tar
+    - docker load -i image/v10.tar
+    - docker load -i image/v11.tar
+  only:
+    - master
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay
+
 stages:
-  - commit
-  - syntax
-  - docker
+  - lint
+  - build
+  - test
+  - deploy
 
-# commit
-git-history:
-  stage: commit
+# test
+dockerlint:
+  stage: lint
+  image: vptech/linter:docker
   script:
-    - >
-      bash <(curl --fail --location --silent --show-error
-      https://git.io/vxIxF)
+    - find . -type f -name "Dockerfile" | xargs -I {} dockerlint {}
 
-lines-length:
-  stage: commit
+# build
+v4:build:
+  extends: .build
   script:
-    - >
-      bash <(curl --fail --location --silent --show-error
-      https://git.io/vxIxN)
+    - docker build --rm --tag node:4 4
+    - mkdir image
+    - docker save node:4 > image/v4.tar
 
-# syntax
-docker-lint:
-  stage: syntax
-  image: vpgrp/linter:docker
+v5:build:
+  extends: .build
   script:
-    - find . -type f -name "Dockerfile" | xargs -I{} dockerlint {}
+    - docker build --rm --tag node:5 5
+    - mkdir image
+    - docker save node:5 > image/v5.tar
 
-# docker
-build-latest:
-  stage: docker
-  image: docker:latest
-  services:
-    - docker:dind
-  variables:
-    DOCKER_DRIVER: overlay
+v6:build:
+  extends: .build
   script:
-    - docker build --rm --tag vpgrp/nodejs:latest .
+    - docker build --rm --tag node:6 6
+    - mkdir image
+    - docker save node:6 > image/v6.tar
 
-build-4:
-  stage: docker
-  image: docker:latest
-  services:
-    - docker:dind
-  variables:
-    DOCKER_DRIVER: overlay
+v7:build:
+  extends: .build
   script:
-    - docker build --rm --tag vpgrp/nodejs:4 4
+    - docker build --rm --tag node:7 7
+    - mkdir image
+    - docker save node:7 > image/v7.tar
 
-build-5:
-  stage: docker
-  image: docker:latest
-  services:
-    - docker:dind
-  variables:
-    DOCKER_DRIVER: overlay
+v8:build:
+  extends: .build
   script:
-    - docker build --rm --tag vpgrp/nodejs:5 5
+    - docker build --rm --tag node:8 8
+    - mkdir image
+    - docker save node:8 > image/v8.tar
 
-build-6:
-  stage: docker
-  image: docker:latest
-  services:
-    - docker:dind
-  variables:
-    DOCKER_DRIVER: overlay
+v9:build:
+  extends: .build
   script:
-    - docker build --rm --tag vpgrp/nodejs:6 6
+    - docker build --rm --tag node:9 9
+    - mkdir image
+    - docker save node:9 > image/v9.tar
 
-build-7:
-  stage: docker
-  image: docker:latest
-  services:
-    - docker:dind
-  variables:
-    DOCKER_DRIVER: overlay
+v10:build:
+  extends: .build
   script:
-    - docker build --rm --tag vpgrp/nodejs:7 7
+    - docker build --rm --tag node:10 10
+    - mkdir image
+    - docker save node:10 > image/v10.tar
 
-build-8:
-  stage: docker
-  image: docker:latest
-  services:
-    - docker:dind
-  variables:
-    DOCKER_DRIVER: overlay
+v11:build:
+  extends: .build
   script:
-    - docker build --rm --tag vpgrp/nodejs:8 8
+    - docker build --rm --tag node:11 11
+    - mkdir image
+    - docker save node:11 > image/v11.tar
 
-build-9:
-  stage: docker
-  image: docker:latest
-  services:
-    - docker:dind
-  variables:
-    DOCKER_DRIVER: overlay
+# test
+v4:test:
+  extends: .test
   script:
-    - docker build --rm --tag vpgrp/nodejs:9 9
+    - docker run node:4 node --version
+
+v5:test:
+  extends: .test
+  script:
+    - docker run node:5 node --version
+
+v6:test:
+  extends: .test
+  script:
+    - docker run node:6 node --version
+
+v7:test:
+  extends: .test
+  script:
+    - docker run node:7 node --version
+
+v8:test:
+  extends: .test
+  script:
+    - docker run node:8 node --version
+
+v9:test:
+  extends: .test
+  script:
+    - docker run node:9 node --version
+
+v10:test:
+  extends: .test
+  script:
+    - docker run node:10 node --version
+
+v11:test:
+  extends: .test
+  script:
+    - docker run node:11 node --version
+
+# deploy
+# https://hub.docker.com/u/vpgrp/
+vpgrp:
+  extends: .deploy
+  script:
+    - docker tag node:4  vpgrp/node:4
+    - docker tag node:5  vpgrp/node:5
+    - docker tag node:6  vpgrp/node:6
+    - docker tag node:7  vpgrp/node:7
+    - docker tag node:8  vpgrp/node:8
+    - docker tag node:9  vpgrp/node:9
+    - docker tag node:10 vpgrp/node:10
+    - docker tag node:11 vpgrp/node:11
+    - docker tag node:10 vpgrp/node:lts
+    - docker tag node:11 vpgrp/node:latest
+    - docker push vpgrp/node:4
+    - docker push vpgrp/node:5
+    - docker push vpgrp/node:6
+    - docker push vpgrp/node:7
+    - docker push vpgrp/node:8
+    - docker push vpgrp/node:9
+    - docker push vpgrp/node:10
+    - docker push vpgrp/node:11
+    - docker push vpgrp/node:lts
+    - docker push vpgrp/node:latest
+
+# https://hub.docker.com/u/vptech/
+vptech:
+  extends: .deploy
+  script:
+    - docker tag node:4  vptech/node:4
+    - docker tag node:5  vptech/node:5
+    - docker tag node:6  vptech/node:6
+    - docker tag node:7  vptech/node:7
+    - docker tag node:8  vptech/node:8
+    - docker tag node:9  vptech/node:9
+    - docker tag node:10 vptech/node:10
+    - docker tag node:11 vptech/node:11
+    - docker tag node:10 vptech/node:lts
+    - docker tag node:11 vptech/node:latest
+    - docker push vptech/node:4
+    - docker push vptech/node:5
+    - docker push vptech/node:6
+    - docker push vptech/node:7
+    - docker push vptech/node:8
+    - docker push vptech/node:9
+    - docker push vptech/node:10
+    - docker push vptech/node:11
+    - docker push vptech/node:lts
+    - docker push vptech/node:latest
 # EOF
