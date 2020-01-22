@@ -168,29 +168,29 @@ v11:test:
 
 # deploy
 # https://hub.docker.com/u/vpgrp/
-vpgrp:
-  extends: .deploy
-  script:
-    - docker tag node:4  vpgrp/node:4
-    - docker tag node:5  vpgrp/node:5
-    - docker tag node:6  vpgrp/node:6
-    - docker tag node:7  vpgrp/node:7
-    - docker tag node:8  vpgrp/node:8
-    - docker tag node:9  vpgrp/node:9
-    - docker tag node:10 vpgrp/node:10
-    - docker tag node:11 vpgrp/node:11
-    - docker tag node:10 vpgrp/node:lts
-    - docker tag node:11 vpgrp/node:latest
-    - docker push vpgrp/node:4
-    - docker push vpgrp/node:5
-    - docker push vpgrp/node:6
-    - docker push vpgrp/node:7
-    - docker push vpgrp/node:8
-    - docker push vpgrp/node:9
-    - docker push vpgrp/node:10
-    - docker push vpgrp/node:11
-    - docker push vpgrp/node:lts
-    - docker push vpgrp/node:latest
+# vpgrp:
+#   extends: .deploy
+#   script:
+#     - docker tag node:4  vpgrp/node:4
+#     - docker tag node:5  vpgrp/node:5
+#     - docker tag node:6  vpgrp/node:6
+#     - docker tag node:7  vpgrp/node:7
+#     - docker tag node:8  vpgrp/node:8
+#     - docker tag node:9  vpgrp/node:9
+#     - docker tag node:10 vpgrp/node:10
+#     - docker tag node:11 vpgrp/node:11
+#     - docker tag node:10 vpgrp/node:lts
+#     - docker tag node:11 vpgrp/node:latest
+#     - docker push vpgrp/node:4
+#     - docker push vpgrp/node:5
+#     - docker push vpgrp/node:6
+#     - docker push vpgrp/node:7
+#     - docker push vpgrp/node:8
+#     - docker push vpgrp/node:9
+#     - docker push vpgrp/node:10
+#     - docker push vpgrp/node:11
+#     - docker push vpgrp/node:lts
+#     - docker push vpgrp/node:latest
 
 # https://hub.docker.com/u/vptech/
 vptech:
